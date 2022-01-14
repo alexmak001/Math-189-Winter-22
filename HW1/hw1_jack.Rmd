@@ -1,0 +1,34 @@
+---
+title: "hw1_jack"
+author: "Jack"
+date: "1/13/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+cars=read.csv("mtcars.csv")
+head(cars)
+```
+## Q5
+
+```{r}
+cars_num=subset(cars,select=-c(model))
+pairs(cars_num, pch=20)
+```
+## Q7
+
+```{r}
+library(fmsb)
+df=data.frame(cars_num)
+df <- log(df[ , -which(names(df) %in% c("am","vs"))])
+df$vs <- cars_num$vs
+df$am <- cars_num$am
+df
+radarchart(head(df))
+```
