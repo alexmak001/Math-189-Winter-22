@@ -1,5 +1,5 @@
 ---
-title: "hw1_jack"
+title: "hw1"
 author: "Jack, Sharon"
 date: "1/13/2022"
 output:
@@ -33,7 +33,8 @@ v11 = mean(cars$carb)
 tab <- matrix(c(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11), ncol=11)
 colnames(tab) <- c("mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
 rownames(tab) <- c("mean")
-tab
+library(knitr)
+kable(tab)
 ```
 
 ## Q2
@@ -41,9 +42,26 @@ tab
 ```{r}
 df = as.data.frame(cars)
 df <- df[ , -which(names(df) %in% c("model"))]
-result = cov(df)
-result
+result_1 = cov(df)
+result_2 = cor(df)
+result_1
+result_2
 ```
+### Explanation: 
+Based on the variance-covariance matrix, it can be interpreted that the diagonal is the variance of the
+variable. A positive covariance means that two variables increase or decrease at the same time. For example,
+the covariance of disp and cyl is 199.66028 which means when disp increases cyl tends to increase too. Some
+other pairs of variable that have a positive covariance are hp and cyl, qsec and mpg, and drat and vs. A
+negative covariance means that two variables means that when one of the variables increases the other one
+decreases. Some examples are disp and mpg whose covariance is -633.09721, drat and cyl whose covariance is
+-0.69993811, and hp and qsec whose covariance is -0.70822339. 
+The correlation matrix tells us the correlation between two variables. A large and positive correlation means
+that two variables have a strong correlation and that they increase simultaneously. Examples for strong
+positive correlations are drat and mpg, disp and cyl, carb and hp. A small correlation that is close to 0
+means that two variables are unlikely to be correlated. Pairs of variables that are not correlated are am and
+hp, qsec and wt, gear and vs. Negative and large correlations indicate that two variables change oppositely.
+While one variable decreases, the other increases. Examples of pairs of varibles that have this correlation
+are drat and wt, wt and mpg, and vs and disp. 
 
 ## Q5
 
@@ -51,6 +69,7 @@ result
 cars_num=subset(cars,select=-c(model))
 pairs(cars_num, pch=20)
 ```
+
 ## Q7
 
 ```{r}
