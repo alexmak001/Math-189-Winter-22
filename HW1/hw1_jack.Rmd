@@ -1,6 +1,6 @@
 ---
 title: "hw1"
-author: "Jack, Sharon"
+author: "Jack Chen, Sharon Zhao, Alex Makhratchev"
 date: "1/13/2022"
 output:
   pdf_document: default
