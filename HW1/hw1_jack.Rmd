@@ -82,7 +82,7 @@ plot(x = d$wt,
 
 # Q4
 Blue is 4 cylinder, Purple is 6 cylinder, and Gray is 8 cylinder
-```{r pressure, echo=FALSE}
+```{r}
 plot(x = d$wt,
      y = d$mpg,
      col = d$cyl,
@@ -116,3 +116,5 @@ df <- rbind(max_min, df)
 df
 radarchart(df)
 ```
+### Explanation: 
+I can't tell from the chart since there are so many cars in the chart and they are pretty close on the chart.
