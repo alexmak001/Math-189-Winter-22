@@ -7,22 +7,34 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Question 3
 
 ```{r cars}
-summary(cars)
+d = read.csv("mtcars.csv")
+d
 ```
 
-## Including Plots
 
-You can also embed plots, for example: 1
+```{r cars2}
 
+plot(x = d$wt,
+     y = d$mpg,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP")
+```
+
+# Question 4
+Blue is 4 cylinder, Purple is 6 cylinder, and Gray is 8 cylinder
 ```{r pressure, echo=FALSE}
-plot(pressure)
+plot(x = d$wt,
+     y = d$mpg,
+     col = d$cyl,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP VS # of Cylinders")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Question 6
+
+There is a relationship between wt and mpg and it is subject to the number of cylinders. As shown in the colored scatter plot, vehicles that weigh less and have 4 cylinders have the highest MPG. The second group is the 6 cylinder vehicles with medium weight and they have medium MPG. The last group is the heavy vehicles with the most cylinders and they have the lowest MPG.
