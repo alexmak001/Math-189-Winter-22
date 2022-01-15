@@ -63,12 +63,44 @@ hp, qsec and wt, gear and vs. Negative and large correlations indicate that two 
 While one variable decreases, the other increases. Examples of pairs of varibles that have this correlation
 are drat and wt, wt and mpg, and vs and disp. 
 
+# Q3
+
+```{r cars}
+d = read.csv("mtcars.csv")
+d
+```
+
+
+```{r cars2}
+
+plot(x = d$wt,
+     y = d$mpg,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP")
+```
+
+# Q4
+Blue is 4 cylinder, Purple is 6 cylinder, and Gray is 8 cylinder
+```{r pressure, echo=FALSE}
+plot(x = d$wt,
+     y = d$mpg,
+     col = d$cyl,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP VS # of Cylinders")
+```
+
 ## Q5
 
 ```{r}
 cars_num=subset(cars,select=-c(model))
 pairs(cars_num, pch=20)
 ```
+
+# Q6
+
+There is a relationship between wt and mpg and it is subject to the number of cylinders. As shown in the colored scatter plot, vehicles that weigh less and have 4 cylinders have the highest MPG. The second group is the 6 cylinder vehicles with medium weight and they have medium MPG. The last group is the heavy vehicles with the most cylinders and they have the lowest MPG.
 
 ## Q7
 
