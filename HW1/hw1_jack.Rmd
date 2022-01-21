@@ -1,8 +1,9 @@
 ---
-title: "hw1_jack"
-author: "Jack"
+title: "hw1"
+author: "Jack Chen, Sharon Zhao, Alex Makhratchev"
 date: "1/13/2022"
-output: html_document
+output:
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -15,20 +16,105 @@ knitr::opts_chunk$set(echo = TRUE)
 cars=read.csv("mtcars.csv")
 head(cars)
 ```
+## Q1
+
+```{r}
+v1 = mean(cars$mpg)
+v2 = mean(cars$cyl)
+v3 = mean(cars$disp)
+v4 = mean(cars$hp)
+v5 = mean(cars$drat)
+v6 = mean(cars$wt)
+v7 = mean(cars$qsec)
+v8 = mean(cars$vs)
+v9 = mean(cars$am)
+v10 = mean(cars$gear)
+v11 = mean(cars$carb)
+tab <- matrix(c(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11), ncol=11)
+colnames(tab) <- c("mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+rownames(tab) <- c("mean")
+library(knitr)
+kable(tab)
+```
+
+## Q2
+
+```{r}
+df = as.data.frame(cars)
+df <- df[ , -which(names(df) %in% c("model"))]
+result_1 = cov(df)
+result_2 = cor(df)
+result_1
+result_2
+```
+### Explanation: 
+Based on the variance-covariance matrix, it can be interpreted that the diagonal is the variance of the
+variable. A positive covariance means that two variables increase or decrease at the same time. For example,
+the covariance of disp and cyl is 199.66028 which means when disp increases cyl tends to increase too. Some
+other pairs of variable that have a positive covariance are hp and cyl, qsec and mpg, and drat and vs. A
+negative covariance means that two variables means that when one of the variables increases the other one
+decreases. Some examples are disp and mpg whose covariance is -633.09721, drat and cyl whose covariance is
+-0.69993811, and hp and qsec whose covariance is -0.70822339. 
+The correlation matrix tells us the correlation between two variables. A large and positive correlation means
+that two variables have a strong correlation and that they increase simultaneously. Examples for strong
+positive correlations are drat and mpg, disp and cyl, carb and hp. A small correlation that is close to 0
+means that two variables are unlikely to be correlated. Pairs of variables that are not correlated are am and
+hp, qsec and wt, gear and vs. Negative and large correlations indicate that two variables change oppositely.
+While one variable decreases, the other increases. Examples of pairs of varibles that have this correlation
+are drat and wt, wt and mpg, and vs and disp. 
+
+# Q3
+
+```{r cars}
+d = read.csv("mtcars.csv")
+d
+```
+
+
+```{r cars2}
+
+plot(x = d$wt,
+     y = d$mpg,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP")
+```
+
+# Q4
+Blue is 4 cylinder, Purple is 6 cylinder, and Gray is 8 cylinder
+```{r}
+plot(x = d$wt,
+     y = d$mpg,
+     col = d$cyl,
+     xlab = "Weight",
+     ylab = "MPG",
+     main = "Weight vs MGP VS # of Cylinders")
+```
+
 ## Q5
 
 ```{r}
 cars_num=subset(cars,select=-c(model))
 pairs(cars_num, pch=20)
 ```
+
+# Q6
+
+There is a relationship between wt and mpg and it is subject to the number of cylinders. As shown in the colored scatter plot, vehicles that weigh less and have 4 cylinders have the highest MPG. The second group is the 6 cylinder vehicles with medium weight and they have medium MPG. The last group is the heavy vehicles with the most cylinders and they have the lowest MPG.
+
 ## Q7
 
 ```{r}
 library(fmsb)
+max_min <- data.frame(mpg = c(6, 0), cyl = c(6, 0), disp = c(6, 0), hp = c(6, 0), drat = c(6, 0), wt = c(6, 0), qsec = c(6, 0), vs = c(6, 0), am = c(6, 0), gear = c(6, 0), carb = c(6, 0))
+rownames(max_min) <- c("max", "min")
 df=data.frame(cars_num)
 df <- log(df[ , -which(names(df) %in% c("am","vs"))])
 df$vs <- cars_num$vs
 df$am <- cars_num$am
+df <- rbind(max_min, df)
 df
-radarchart(head(df))
+radarchart(df)
 ```
+### Explanation: 
+I can't tell from the chart since there are so many cars in the chart and they are pretty close on the chart.
