@@ -1,0 +1,35 @@
+---
+title: "hw2_jack"
+author: "Jack"
+date: "1/22/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+# Q1
+
+```{r}
+require(tidyr);
+```
+Formatting Data
+```{r}
+library(stringr)
+nutrient = read.delim("nutrient.txt", header=FALSE)
+df <- data.frame(nutrient)
+df <- apply(df, 2, FUN=str_squish)
+df <- data.frame(df)
+cols = c('id','1', '2','3','4','5');
+df <- separate(data=df, V1, cols, sep=' ', convert = TRUE)
+df <- subset(df, select = -c(id))
+head(df)
+```
+Calculation
+```{r}
+apply(df, 2, mean)
+apply(df, 2, sd)
+```
