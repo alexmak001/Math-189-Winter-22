@@ -1,28 +1,60 @@
 ---
-title: "hw2alex"
+title: "HW2"
+author: "Alex Makhratchev, Sharon Zhao, Jiadong Chen"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# Q1
+
+```{r}
+require(tidyr);
+```
+Formatting Data
+```{r}
+library(stringr)
+nutrient = read.delim("nutrient.txt", header=FALSE)
+df <- data.frame(nutrient)
+df <- apply(df, 2, FUN=str_squish)
+df <- data.frame(df)
+cols = c('id','1', '2','3','4','5');
+df <- separate(data=df, V1, cols, sep=' ', convert = TRUE)
+df <- subset(df, select = -c(id))
+head(df)
+```
+
+```{r}
+apply(df, 2, mean)
+apply(df, 2, sd)
+```
 
 ## Question #2
 
-```{r cars}
-nutrients = read.csv("nutrient.csv",sep="\t",header=FALSE)
-nutrients
-```
+Calcium, p is < 0.05, so we reject the hypothesis that the population mean calcium intake is not equal to 1000  
 ```{r}
-#t.test(nutrients, mu = 0, alternative = "two.sided")
+t.test(df[1], mu = 1000, alternative = "two.sided")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+Iron, p is < 0.05, so we reject the hypothesis that the population mean iron intake is not equal to 15  
+```{r}
+t.test(df[2], mu = 15, alternative = "two.sided")
+```
+Protein, p is < 0.05, so we reject the hypothesis that the population mean iron intake is not equal to 15 
+```{r}
+t.test(df[3], mu = 60, alternative = "two.sided")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Vitamin A, p is > 0.05, so we accept the hypothesis that the population mean vitamin a intake not equal
+```{r}
+t.test(df[4], mu = 800, alternative = "two.sided")
+```
+
+Vitamin C, p is > 0.05, so we accept the hypothesis that the population mean vitamin c intake not equal
+```{r}
+t.test(df[5], mu = 75, alternative = "two.sided")
+```
+
+## Question 3
+US women do not meet the recommended daily nutrient intake amount for Calcium, Iron, Protein, but they do meet it for Vitamin A and C. US women should eat more calcium and iron, but less protein.
