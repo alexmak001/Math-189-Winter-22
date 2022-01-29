@@ -1,0 +1,33 @@
+---
+title: "hw3alex"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## HW3 Alex
+
+```{r cars}
+data = read.delim("multiple.txt", sep = " ",header=FALSE)
+```
+
+```{r cars}
+temp = colMeans(data)
+```
+
+```{r cars}
+hnull = integer(50)
+t.test(hnull,temp)
+```
+Problem #1.1
+The P value is < .1, so we reject the null hypothesis and favor the alternative instead: true difference in means is not equal to 0
+
+Problem #1.2
+
+Type 1 Errors = 0.1
+
+FWER = 1 - (1-a)^p = 1 - (0.9)^0.0008154 = 0.00008590727
+
+FDP = 0.0008154
