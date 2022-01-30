@@ -1,5 +1,5 @@
 ---
-title: "hw3alex"
+title: "hw3alex&jack"
 output: pdf_document
 ---
 
@@ -7,27 +7,68 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## HW3 Alex
+## Q1.1
 
-```{r cars}
+```{r}
 data = read.delim("multiple.txt", sep = " ",header=FALSE)
 ```
 
 ```{r cars}
-temp = colMeans(data)
+sample_mean = colMeans(data)
+sample_sd = sapply(data, sd)
+hnull = hnull = integer(50)
+
+n = nrow(data)
+t_statistic = (sample_mean - hnull)/(sample_sd/sqrt(n))
+
+pval = 2*apply(rbind(pt(t_statistic, df = n-1, lower.tail = F),
+                     pt(t_statistic, df = n-1, lower.tail = T)), 2, min)
+rejection_p <- pval < 0.1
+print(pval)
+print(rejection_p)
+
 ```
 
-```{r cars}
-hnull = integer(50)
-t.test(hnull,temp)
+## Q1.2
+
+```{r}
+alpha = 0.1
+FWER = 1 - (1 - alpha)^50
+R = sum(rejection_p)
+V = sum(rejection_p[11:50])
+print(FWER)
+print(V/R)
 ```
-Problem #1.1
-The P value is < .1, so we reject the null hypothesis and favor the alternative instead: true difference in means is not equal to 0
+FWER: 0.9948462
+FDP: 0.2857143
 
-Problem #1.2
+## Q1.3
 
-Type 1 Errors = 0.1
+```{r}
+pval.bon = p.adjust(pval, method = "bonferroni")
+rejection_bon = pval.bon < 0.1
+print(rejection_bon)
+FWER.bon = 1 - (1 - alpha/50)^50
+print(FWER.bon)
+```
 
-FWER = 1 - (1-a)^p = 1 - (0.9)^0.0008154 = 0.00008590727
+FWER: 0.09525318
 
-FDP = 0.0008154
+## Q1.4
+
+```{r}
+pval.bh = p.adjust(pval, method = "BH")
+rejection_bh = pval.bh < 0.1
+alphas = 0.1 * seq(1/50, 1, by = 1/50)
+FWER.bh = 1 - prod(1 - alphas)
+FDP_bh = sum(rejection_bh[11:50])/sum(rejection_bh)
+print(FWER.bh)
+print(FDP_bh)
+```
+
+BH's FWER is slightly lower than step1 and way higher than step2 but BH's FDP is 0, which is way lower than step1 and 3.
+
+
+
+
+
