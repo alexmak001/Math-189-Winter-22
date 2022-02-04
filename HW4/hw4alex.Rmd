@@ -10,6 +10,22 @@ library(ISLR)
 
 
 ```{r cars}
-data(Auto)
+head(Auto)
+```
+ Question 1
+```{r cars}
+cars = transform(Auto, mpg01= ifelse(mpg>median(Auto$mpg), 1, 0))
+head(cars)
+```
+
+Question 2:
+From the pairs of scatter plots we can compare an attribute to the MPG column in order to find the most useful feature for predicting mpg01.The cylinders attribute does not give us much information, because it is a discreet variable. Comparing the displacement column to the MPG shows us that there is a negative correlation with the two, which makes sense as a bigger engine will be heavier and require more gas to move it. Similarly with horsepower, the more a car has the lower MPG it will most likely have. Weight also seems to be an important attribute when compared to MPG: there is a clear negative correlation between the two. Acceleration does not seem to correlate with MPG in anyway. From the year column, we can tell that newer cars to tend have slightly better MPG than older cars. Origin and Name attributes are discreet variables and are not very helpful in predicting the MPG of a vehicle.
+```{r cars}
+pairs(cars)
+```
+Question #3
+```{r cars}
+train = cars[1:300,]
+test = cars[301:392,]
 ```
 
