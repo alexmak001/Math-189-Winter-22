@@ -1,0 +1,15 @@
+---
+title: "hw4alex"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ISLR)
+```
+
+
+```{r cars}
+data(Auto)
+```
+
