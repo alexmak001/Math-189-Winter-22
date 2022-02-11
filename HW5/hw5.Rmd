@@ -1,0 +1,15 @@
+---
+title: "HW5"
+author: "Sharon Zhao"
+date: "2/10/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Q1
+```{r}
+
+```
