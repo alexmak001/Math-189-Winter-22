@@ -7,24 +7,33 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ISLR)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Question #2
 
 ```{r cars}
-summary(cars)
+summary(Weekly)
 ```
 
-## Including Plots
+From the numerical summary, we can see that all of the legs have a positive median and mean, signifying on average the stock market grows in a positive direction. This is also evident from the direction variable, with there being significantly more weeks where there was a net positive change.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r cars}
+plot(Weekly$Today, Weekly$Volume)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+From the plot we can see that that if there is a significant change in the price during the week, it would most likely be neagtive. Also, weeks with larger volumes have larger changes in price.
+
+```{r cars}
+plot(Weekly$Lag5, Weekly$Today)
+```
+From the graph there is minimal correlation between the past 5 weeks of the market and how the market will do this week.
+
+## Question 2b)
+
+```{r cars}
+glm.fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume, data = Smarket, family = binomial)
+summary(glm.fit)
+```
+
+None of the variables seem statistically significant, but Lag1 seems to be the most useful out of all of them.
