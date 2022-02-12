@@ -1,0 +1,80 @@
+---
+title: "HW5"
+author: "Sharon Zhao"
+date: "2/10/2022"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Q1
+
+\(a\)
+
+```{r standardized}
+data <- read.delim("Places_Rated.txt", header =FALSE, sep = '')
+df <- data.frame(data)
+names(df) <- c("Climate and Terrain", "Housing", 
+               "Health Care & the Environment", "Crime", 
+               "Transportation", "Education", "The Arts", 
+               "Recreation", "Economics", "index")
+standard_df <- scale(df)
+standard_cov <- cov(standard_df)
+standard_ev <- eigen(standard_cov)
+standard_prop <- c()
+for ( i in 1:10) {
+  prop <- (standard_ev$values[i]) / (sum(standard_ev$values))
+  standard_prop <- append(standard_prop, prop)
+}
+standard_cprop <- c()
+cprop <- 0
+for ( i in 1:9) {
+  cprop <- cprop + standard_prop[i] 
+  standard_cprop <- append(standard_cprop, cprop)
+}
+
+plot(standard_prop, xlab="Principal Component", 
+     ylab="Proportion of Variance Explained", 
+     ylim=c(0,1), xaxt="n", type='b', cex=2, pch=20, cex.lab=1.5)
+plot(standard_cprop, xlab="Principal Component", 
+     ylab="Cumulative Proportion of Variance Explained", 
+     ylim=c(0,1), xaxt="n", type="b", col="blue", cex=2, 
+     pch=20, cex.lab=1.5)
+```
+
+```{r raw}
+raw_cov <- cov(df)
+raw_ev <- eigen(raw_cov)
+raw_prop <- c()
+for ( i in 1:10) {
+  prop <- (raw_ev$values[i]) / (sum(raw_ev$values))
+  raw_prop <- append(raw_prop, prop)
+}
+raw_cprop <- cumsum(raw_prop[1:9])
+
+plot(raw_prop, xlab="Principal Component", 
+     ylab="Proportion of Variance Explained", ylim=c(0,1), 
+     xaxt="n", type='b', cex=2, pch=20, cex.lab=1.5)
+plot(raw_cprop, xlab="Principal Component", 
+     ylab="Cumulative Proportion of Variance Explained", 
+     ylim=c(0,1), xaxt="n", type="b", col="blue", cex=2, 
+     pch=20, cex.lab=1.5)
+```
+
+
+
+\(b\)
+```{r principal component analysis}
+library("ggplot2")
+library("ggfortify")
+pca_result <- prcomp(df[,1:5], scale=TRUE)
+pca_result$rotation
+autoplot(pca_result, data=df, color='black')
+biplot(pca_result, scale=0)
+```
+
