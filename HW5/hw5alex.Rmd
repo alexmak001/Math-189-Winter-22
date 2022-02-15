@@ -32,8 +32,30 @@ From the graph there is minimal correlation between the past 5 weeks of the mark
 ## Question 2b)
 
 ```{r cars}
-glm.fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume, data = Smarket, family = binomial)
+glm.fit <- glm(Direction ~ Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume, data = Weekly, family = binomial)
 summary(glm.fit)
 ```
+None of the variables seem statistically significant, but Lag2 seems to be the most useful out of all of them.
 
-None of the variables seem statistically significant, but Lag1 seems to be the most useful out of all of them.
+## Question 2c
+```{r}
+Probs = predict(glm.fit, type='response')
+contrasts(Weekly$Direction)
+Pred_trend = ifelse(Probs>0.5, "Up", "Down")
+table(Pred_trend, Weekly$Direction)
+mean(Pred_trend == Weekly$Direction)
+```
+Fraction of correct predict is 0.561. This model is predicting to much "up" since the dataset is unbalanced.
+
+## Question 2d
+```{r}
+Data_train = Weekly[Weekly$Year <= 2008,]
+Data_test = Weekly[Weekly$Year > 2008,]
+glm_fits2 = glm(Direction ~ Lag2, data = Data_train, family = binomial)
+Probs_2 = predict(glm_fits2, Data_test, type = "response")
+Pred_trend2 = ifelse(Probs_2>0.5, "Up", "Down")
+table(Pred_trend2, Data_test$Direction)
+```
+```{r}
+mean(Pred_trend2 == Data_test$Direction)
+```
