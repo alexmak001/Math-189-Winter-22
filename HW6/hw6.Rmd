@@ -1,0 +1,77 @@
+---
+title: "hw6"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question #1
+
+```{r}
+baseball = read.csv("baseball_5.csv")
+head(baseball)
+```
+
+```{r}
+plot(baseball$Hits, baseball$Salary, main="Hits vs Salary",
+   xlab="Number of Hits in a Season", ylab="Salary ", pch=19)
+
+abline(lm(baseball$Salary~baseball$Hits, data=baseball), col="blue")
+```
+
+
+```{r}
+summary(lm(Salary~Hits, data=baseball))
+```
+Regression Coefficients: Intercept: 63.04, and Hits: 4.39
+Standard Errors: Intercept and hits respectively: 64.9822, 0.056
+
+Residual Sum of Squares
+```{r}
+deviance(lm(Salary~Hits, data=baseball))
+```
+R^2 
+```{r}
+summary((lm(baseball$Salary~baseball$Hits)))$r.squared 
+```
+
+
+## Question 2 
+the estimated regression coefficients and standard errors 
+```{r} 
+multi_fit = lm(Salary~Hits+Walks+PutOuts+CHits, data=baseball)
+summary(multi_fit)$coefficients
+```
+
+Residual Sum of Squares
+```{r}
+deviance(multi_fit)
+```
+
+R^2
+```{r}
+summary(multi_fit)$r.squared
+```
+
+The marginal effects of each coefficient:
+the null hypothesis is that all of the regression coefficients is zero. The alternative hypothesis is that they are not all zero. 
+```{r}
+p_values <- summary(multi_fit)$coefficients[,4]
+df <- data.frame(p_values)
+p <- c()
+for (i in 1:nrow(df)) {
+  if (df[i, ] < 0.05) {
+    p <- append(p, "reject")
+  } else {
+    p <- append(p, "fail to reject")
+  }
+}
+
+df$result <- p
+df
+```
+The result is based on alpha = 0.05. 
+
+
