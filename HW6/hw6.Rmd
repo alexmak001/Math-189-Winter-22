@@ -74,4 +74,14 @@ df
 ```
 The result is based on alpha = 0.05. 
 
+## Question 3
+```{r}
+anova(lm(Salary~Hits, data=baseball), multi_fit)
+```
+
+Multivariate model performs better than univariate model. The RSS for model2 is 29223384 which is smaller than 43058621 and the R^2 is 0.45 > 0.19.
+Based on the test result of anova, we reject null hypothesis and the multivariate model is better.
+
+
+
 
