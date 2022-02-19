@@ -7,13 +7,33 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Question #1
 
 ```{r cars}
-summary(cars)
+baseball = read.csv("baseball_5.csv")
+head(baseball)
+```
+
+```{r cars}
+plot(baseball$Hits, baseball$Salary, main="Hits vs Salary",
+   xlab="Number of Hits in a Season", ylab="Salary ", pch=19)
+
+abline(lm(baseball$Salary~baseball$Hits, data=baseball), col="blue")
+```
+
+
+```{r cars}
+summary(lm(baseball$Salary~baseball$Hits))
+```
+Regression Coefficients: Intercept: 63.04, and Hits: 4.39
+Standard Errors: Intercept and hits respectively: 64.9822, 0.056
+
+Residual Sum of Squares
+```{r cars}
+deviance(lm(baseball$Salary~baseball$Hits))
+```
+R^2 
+```{r cars}
+summary((lm(baseball$Salary~baseball$Hits)))$r.squared 
 ```
 
