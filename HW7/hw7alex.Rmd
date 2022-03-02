@@ -1,0 +1,43 @@
+---
+title: "hw7alex"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("ggplot2")
+install.packages("latex2exp")
+install.packages("magrittr")
+library(magrittr)
+library(ggplot2)
+library(latex2exp)
+```
+
+## Question #1
+
+```{r cars}
+X1 <- -10:10
+X2 <- 3*X1 + 1
+
+df1 <- data.frame(X1, X2, line = "a")
+
+grid <- expand.grid(X1 = seq(min(df1$X1), max(df1$X1), length.out = 200), 
+                    X2 = seq(min(df1$X2), max(df1$X2), length.out = 200))%>% mutate(region = case_when(1 + 3*X1 - X2 < 0 ~ "lt 0", 
+                            1 + 3*X1 - X2 > 0 ~ "gt 0"))
+
+
+ggplot(grid, aes(x = X1, y = X2)) + 
+  geom_tile(aes(fill = region), alpha = 0.5) + 
+  geom_line(data = df1, aes(x = X1, y = X2), size = 1, col = "#7CAE00") + 
+        annotate("text", x = -5, y = 10, label = TeX("$1 + 3X_1 − X_2 < 0$", output = "character"),
+           hjust = 0.5, size = 4, parse = TRUE, col = "blue") + 
+          annotate("text", x = 5, y = -10, label = TeX("$1 + 3X_1 − X_2 > 0$", output = "character"),
+           hjust = 0.5, size = 4, parse = TRUE, col = "red") + 
+  scale_fill_manual(values = c("#F8766D", "#00BFC4")) +
+  scale_x_continuous(expand = c(0.01,0.01), breaks = seq(-10, 10, 2)) +
+  scale_y_continuous(expand = c(0.01,0.01), breaks = seq(-30, 30, 10)) +
+  theme(legend.position = "none") + 
+  labs(title = TeX(r'(Hyperplane Plot: $1 + 3X_1 − X_2 = 0$)'), 
+       x = TeX(r'($X_1$)'), 
+       y = TeX(r'($X_2$)'))
+```
