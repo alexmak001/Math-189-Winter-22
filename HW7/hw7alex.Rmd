@@ -7,7 +7,7 @@ output: pdf_document
 ```{r}
 options(repos = list(CRAN="http://cran.rstudio.com/"))
 install.packages("ggplot2")
-install.packages("llatex2exp")
+install.packages("latex2exp")
 library(ggplot2)
 library(latex2exp)
 
