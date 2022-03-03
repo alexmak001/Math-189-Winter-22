@@ -3,17 +3,14 @@ title: "hw7alex"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Question #1a
+```{r}
+options(repos = list(CRAN="http://cran.rstudio.com/"))
 install.packages("ggplot2")
-install.packages("latex2exp")
+install.packages("llatex2exp")
 library(ggplot2)
 library(latex2exp)
-```
 
-## Question #1a
-
-```{r cars}
 x1 <- -10:10
 x2 <- 3*x1 + 1
 
@@ -21,9 +18,9 @@ plot(x1, x2, type = "l", col = "blue")
 text(c(0), c(-20), "Greater than 0", col = "blue")
 text(c(0), c(20), "Less than 0", col = "blue")
 ```
-## Question #1b
 
-```{r cars}
+## Question #1b
+```{r}
 x1 <- -10:10
 x2 <- (-1/2)*x1 + 1
 
@@ -31,12 +28,37 @@ plot(x1, x2, type = "l", col = "blue")
 text(c(0), c(3), "Greater than 0", col = "blue")
 text(c(0), c(-2), "Less than 0", col = "blue")
 ```
+
+## Question #2
+(a)
+```{r}
+install.packages('plotrix')
+library(plotrix)
+plot.new()
+rect(par("usr")[1], par("usr")[3], par("usr")[2],
+     par("usr")[4], col="blue")
+par(new=TRUE)
+plot(-5:10, type="n", asp=1)
+draw.circle(-1,2,2, col='red')
+points(x = c(0, -1, 2, 3), y = c(0, 1, 2, 8), col = 'black')
+```
+
+(b)
+The blue region is where the set of points would be >4 and the red region is where the set of points would be <= 4. 
+
+(c)
+The points are shown on the plot. (0, 0) is in the blue class. (-1, 1) is in the red class. (2, 2) and (3, 8) are in the blue class. 
+
+(d)
+It is linear in terms of X~1~, X~1~^2^, X~2~, X~2~^2^ because the equation could be expanded into 2X~1~ - 4X~2~ + X~1~^2^ + X~2~^2^ + 1 = 0 which is linear in terms of the listed variables. 
+
 ## Question #3A
-```{r cars}
+```{r}
 train = read.csv("SVM_train.csv")
 head(train)
 ```
-```{r cars}
+
+```{r}
 library(ggplot2)
 ggplot(data=train, aes(x=x.1, y=x.2, color=y))+ geom_point()
 ```
