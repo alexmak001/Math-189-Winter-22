@@ -15,7 +15,7 @@ library(latex2exp)
 
 ## Question #1
 
-```{r cars}
+```{r}
 X1 <- -10:10
 X2 <- 3*X1 + 1
 
@@ -29,9 +29,9 @@ grid <- expand.grid(X1 = seq(min(df1$X1), max(df1$X1), length.out = 200),
 ggplot(grid, aes(x = X1, y = X2)) + 
   geom_tile(aes(fill = region), alpha = 0.5) + 
   geom_line(data = df1, aes(x = X1, y = X2), size = 1, col = "#7CAE00") + 
-        annotate("text", x = -5, y = 10, label = TeX("$1 + 3X_1 − X_2 < 0$", output = "character"),
+        annotate("text", x = -5, y = 10, label = TeX("$1 + 3X_1 - X_2 < 0$", output = "character"),
            hjust = 0.5, size = 4, parse = TRUE, col = "blue") + 
-          annotate("text", x = 5, y = -10, label = TeX("$1 + 3X_1 − X_2 > 0$", output = "character"),
+          annotate("text", x = 5, y = -10, label = TeX("$1 + 3X_1 - X_2 > 0$", output = "character"),
            hjust = 0.5, size = 4, parse = TRUE, col = "red") + 
   scale_fill_manual(values = c("#F8766D", "#00BFC4")) +
   scale_x_continuous(expand = c(0.01,0.01), breaks = seq(-10, 10, 2)) +
@@ -40,4 +40,14 @@ ggplot(grid, aes(x = X1, y = X2)) +
   labs(title = TeX(r'(Hyperplane Plot: $1 + 3X_1 − X_2 = 0$)'), 
        x = TeX(r'($X_1$)'), 
        y = TeX(r'($X_2$)'))
+```
+
+## Question 2
+(a) + (b)
+```{r}
+fun <- function(x1, x2) {((1+x1)^2)+((2-x2)^2)-4}
+x1 <- seq(-10, 10, by=1)
+x2 <- c(0)
+res <- mapply(fun, list(x1), x2)
+matplot(x1, res, type='l')
 ```
