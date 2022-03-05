@@ -1,5 +1,5 @@
 ---
-title: "hw7alex"
+title: "hw7"
 output: pdf_document
 ---
 
@@ -52,7 +52,8 @@ The points are shown on the plot. (0, 0) is in the blue class. (-1, 1) is in the
 (d)
 It is linear in terms of X~1~, X~1~^2^, X~2~, X~2~^2^ because the equation could be expanded into 2X~1~ - 4X~2~ + X~1~^2^ + X~2~^2^ + 1 = 0 which is linear in terms of the listed variables. 
 
-## Question #3A
+## Question 3
+###a
 ```{r}
 train = read.csv("SVM_train.csv")
 head(train)
@@ -62,6 +63,85 @@ head(train)
 library(ggplot2)
 ggplot(data=train, aes(x=x.1, y=x.2, color=y))+ geom_point()
 ```
-The class labeled 2 is mostly centered around 0,0 and the other class, 1, is spread out on the upper right and bottom left side of the other class. The two classes are somewhat visually separable, but not perfectly separable: there are points that are almost on top of each othe and would require over fitting to perfectly predict. The decision boundry will definitely not be linear, and closer to a circle.
+The class labeled 2 is mostly centered around 0,0 and the other class, 1, is spread out on the upper right and bottom left side of the other class. The two classes are somewhat visually separable, but not perfectly separable: there are points that are almost on top of each other and would require over fitting to perfectly predict. The decision boundry will definitely not be linear, and closer to a circle.
 
 
+###b
+```{R}
+#install.packages("e1071")
+library("e1071")
+library("ggplot2")
+col<-c("x.1", "x.2", "y")
+train = train[,col]
+train[,3] <- sapply(train[,3], as.factor)
+svmfit_1 <- svm(y ~., data = train, kernel = "linear", cost = .001, scale = FALSE)
+
+tuned <- tune(svm, y ~., data = train, kernel = "linear",
+              ranges = list(cost=c(0.001,0.01,.1,1,10,100)))
+# Will show the optimal cost parameter
+summary(tuned)
+
+p_train <- predict(svmfit_1, train[,col], type="class")
+
+ggplot(data=train, aes(x=x.1, y=x.2, color=p_train))+ geom_point()
+```
+
+```{r}
+library("ggplot2")
+test = read.csv("SVM_test.csv")
+col<-c("x.1", "x.2", "y")
+test = test[,col]
+test[,3] <- sapply(test[,3], as.factor)
+p_test <- predict(svmfit_1, test[,col], type="class")
+ggplot(data=test, aes(x=x.1, y=x.2, color=p_test))+ geom_point()
+```
+
+###c
+```{r}
+library("ggplot2")
+svmfit <- svm(y ~., data = train, kernel = "radial", cost = .1, gamma = .1, scale = FALSE)
+
+tuned <- tune(svm, y ~., data = train, kernel = "radial",
+              ranges = list(cost=c(0.001,0.01,.1,1,10,100), gamma=c(0.001,0.01,.1,1,10,100)))
+summary(tuned)
+
+svmfit_2 <- svm(y ~., data = train, kernel = "radial", cost = 0.1, gamma = 1, scale = FALSE)
+p_train <- predict(svmfit_2, train[,col], type="class")
+p_test <- predict(svmfit_2, test[,col], type="class")
+ggplot(data=train, aes(x=x.1, y=x.2, color=p_train))+ geom_point()
+ggplot(data=test, aes(x=x.1, y=x.2, color=p_test))+ geom_point()
+
+```
+
+###d
+```{r}
+rocplot =function (pred , truth , ...){
+  predob = prediction(pred , truth )
+  perf=performance(predob , "fpr", "tpr")
+  plot(perf ,...)}
+
+# Prepare the training and testing predictions for ROC curve
+linear.opt=svm(y~., train, kernel ="linear", cost=0.001, decision.values =TRUE)
+linear.train=attributes(predict (linear.opt, train, decision.values =TRUE))$decision.values
+linear.test=attributes(predict (linear.opt, test, decision.values =TRUE))$decision.values
+
+gaussian.opt=svm(y~., train, kernel ="radial", gamma=0.1, cost=1, decision.values =TRUE)
+gaussian.train=attributes(predict (gaussian.opt, train, decision.values =TRUE))$decision.values
+gaussian.test=attributes(predict (gaussian.opt, test, decision.values =TRUE))$decision.values
+
+#install.packages("ROCR")
+library(ROCR)
+rocplot(linear.train, train[,"y"], main="ROC for Training Set", col="red")
+rocplot(gaussian.train, train[,"y"], add=T, col="blue")
+legend("bottomright", legend=c("Linear", "Gaussian"),
+       col=c("red", "blue"), lty=c(1,1,1), cex=1.5)
+
+# Plot ROC curves for testing set
+rocplot(linear.test, test[,"y"], main="ROC for Testing Set", col="red")
+rocplot(gaussian.test, test[,"y"], add=T, col="blue")
+legend("bottomright", legend=c("Linear", "Gaussian"),
+       col=c("red", "blue"), lty=c(1,1,1), cex=1.5)
+
+```
+
+According to the plot, the Gaussian kernel has better performance on the training set while linear kernel has better performance on the testing set.
