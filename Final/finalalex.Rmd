@@ -9,7 +9,36 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Question 1
 
+Loading data
 ```{r cars}
-summary(cars)
+train = read.table("spam-train.txt",header=FALSE, sep=",")
+head(train)
 ```
+
+```{r cars}
+test = read.table("spam-test.txt",header=FALSE, sep=",")
+head(test)
+```
+
+Standardizing Train Data
+```{r cars}
+train_Standardized = data.frame(scale(train))
+train_Standardized$V58 = train$V58
+head(train_Standardized)
+```
+
+Standardizing Test Data
+```{r cars}
+test_Standardized = data.frame(scale(test))
+test_Standardized$V58 = test$V58
+head(test_Standardized)
+```
+
+Log Transformation on Train Data
+
+
+
+
+
+
 
