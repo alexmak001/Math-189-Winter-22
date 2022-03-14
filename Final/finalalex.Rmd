@@ -36,9 +36,19 @@ head(test_Standardized)
 
 Log Transformation on Train Data
 
+```{r cars}
+train_Log = data.frame(log(train+1))
+train_Log$V58 = train$V58
+head(train_Log)
+```
 
+Log Transformation on Test Data
 
-
+```{r cars}
+test_Log = data.frame(log(test+1))
+test_Log$V58 = test$V58
+head(test_Log)
+```
 
 
 
