@@ -3,13 +3,113 @@ title: "finalalex"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
+```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Question 1
 
-```{r cars}
-summary(cars)
+Loading data
+```{r}
+train = read.table("spam-train.txt",header=FALSE, sep=",")
+head(train)
 ```
+
+```{r}
+test = read.table("spam-test.txt",header=FALSE, sep=",")
+head(test)
+```
+# Standardizing
+
+Standardizing Train Data
+```{r}
+train_Standardized = data.frame(scale(train))
+train_Standardized$V58 = train$V58
+train_Standardized
+```
+
+Standardizing Test Data
+```{r}
+test_Standardized = data.frame(scale(test))
+test_Standardized$V58 = test$V58
+head(test_Standardized)
+```
+
+# A) Visualizing Standardized columns
+
+Training Standardized Spam Data V$58 == 1
+```{r}
+spamStandTrain = train_Standardized[train_Standardized$V58 == 1,]
+hist(spamStandTrain$V53,main="Number of times the Charater $ Appears", xlab="$ Character  Appearance")
+```
+Training Standardized Not Spam Data V$58 == 0
+```{r}
+NotspamStandTrain = train_Standardized[train_Standardized$V58 == 0,]
+hist(NotspamStandTrain$V53,main="Number of times the Charater $ Appears", xlab="$ Character  Appearance")
+```
+# Log Transformation
+
+Log Transformation on Train Data
+
+```{r}
+train_Log = data.frame(log(train+1))
+train_Log$V58 = train$V58
+head(train_Log)
+```
+
+Log Transformation on Test Data
+
+```{r}
+test_Log = data.frame(log(test+1))
+test_Log$V58 = test$V58
+head(test_Log)
+```
+# Visualizing Log Transformation
+0 = Not Spam, 1 = Spam
+```{r}
+plot(train_Log$V56, train_Log$V57, col=factor(train_Log$V58),xlab="Log of length of the longest uninterrupted
+sequence of capital letters", ylab="Log of sum of the lengths of uninterrupted
+sequences of capital letters",main="Log of Longest Capital Letters vs. Sum of number of capital letters")
+legend("bottomright",
+       legend = levels(factor(train_Log$V58)),
+       pch = 19,
+       col = factor(levels(factor(train_Log$V58))))
+```
+
+
+
+# Discretize Transformation
+
+Discretize Transformation on Train Data
+
+```{r cars}
+train_Discretize = data.frame(train>0)
+train_Discretize$V58 = train$V58
+train_Discretize = train_Discretize*1
+head(train_Discretize)
+```
+
+Discretize Transformation on Test Data
+
+```{r cars}
+test_Discretize = data.frame(test>0)
+test_Discretize$V58 = test$V58
+test_Discretize = test_Discretize*1
+head(test_Discretize)
+```
+
+# Visualization of Discretized Transformed Data
+First five columns are if the words "make", "address", "all", "3d", "our" are present in the email.
+```{r cars}
+discLabels = c("make", "address", "all", "3d", "our")
+means = c(mean(train_Discretize$V1),mean(train_Discretize$V2),mean(train_Discretize$V3),mean(train_Discretize$V4),mean(train_Discretize$V5))
+
+barplot(means, main="Ratio of a word being present in all of the training emails",names.arg = discLabels,
+   xlab="Word")
+```
+# B) Logistic Regression Model
+
+
+
+
 
