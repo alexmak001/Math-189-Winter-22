@@ -5,6 +5,8 @@ output: pdf_document
 
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
+library(ISLR)
+library(MASS)
 ```
 
 ## Question 1
@@ -82,7 +84,7 @@ legend("bottomright",
 
 Discretize Transformation on Train Data
 
-```{r cars}
+```{r}
 train_Discretize = data.frame(train>0)
 train_Discretize$V58 = train$V58
 train_Discretize = train_Discretize*1
@@ -91,7 +93,7 @@ head(train_Discretize)
 
 Discretize Transformation on Test Data
 
-```{r cars}
+```{r}
 test_Discretize = data.frame(test>0)
 test_Discretize$V58 = test$V58
 test_Discretize = test_Discretize*1
@@ -100,16 +102,66 @@ head(test_Discretize)
 
 # Visualization of Discretized Transformed Data
 First five columns are if the words "make", "address", "all", "3d", "our" are present in the email.
-```{r cars}
+```{r}
 discLabels = c("make", "address", "all", "3d", "our")
 means = c(mean(train_Discretize$V1),mean(train_Discretize$V2),mean(train_Discretize$V3),mean(train_Discretize$V4),mean(train_Discretize$V5))
 
 barplot(means, main="Ratio of a word being present in all of the training emails",names.arg = discLabels,
    xlab="Word")
 ```
-# B) Logistic Regression Model
 
+# C) LDA and QDA 
 
+LDA on the standardized data 
+```{r}
+stan_model <- lda(V58~., data=train_Standardized)
+stan_predictions <- predict(stan_model, test_Standardized)
+stan_class = stan_predictions$class
+stan_true_val = test_Standardized$V58
+stan_test_error = mean(stan_class!=stan_true_val)
+stan_test_error
+```
 
+LDA on the log transformed data 
+```{r}
+log_model <- lda(V58~., data=train_Log)
+log_predictions <- predict(log_model, test_Log)
+log_class = log_predictions$class
+log_true_val = test_Log$V58
+log_test_error = mean(log_class!=log_true_val)
+log_test_error
+```
+
+QDA on the standardized data 
+```{r}
+stan_qda <- qda(V58~., data=train_Standardized)
+stan_qdaPred <- predict(stan_qda, test_Standardized)
+stan_qdaClass = stan_qdaPred$class
+stan_qdaTrue = test_Standardized$V58
+stan_qdaTest = mean(stan_qdaClass != stan_qdaTrue)
+stan_qdaTest
+```
+
+QDA on the transformed data 
+```{r}
+log_qda = qda(V58~., data=train_Log)
+log_qdaPred = predict(log_qda, test_Log)
+log_qdaTest = mean(log_qdaPred$class != test_Log$V58)
+log_qdaTest
+```
+
+Test error rates in a table 
+```{r}
+tab <- matrix(c(stan_test_error, stan_qdaTest, 
+                log_test_error, log_qdaTest), nrow=4, ncol=1)
+colnames(tab) <- c('Test Error Rate')
+rownames(tab) <- c('LDA on Standardized Data', 
+                   'QDA on Standardized Data', 
+                   'LDA on Log Transformed Data',
+                   'QDA on Log Transformed Data')
+tab <- as.table(tab)
+tab
+```
+Comment: LDA performed on the log transformed data has the lowest test error rate, while LDA performed on the standardized data has the highest test error rate. Both LDA and QDA are performed considering all the features. This result indicates that whether or not the email is a spam has a better linear relationship with the 57 features after the log transformation. 
 
 
