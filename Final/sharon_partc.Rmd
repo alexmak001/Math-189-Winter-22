@@ -240,40 +240,37 @@ library("e1071")
 library("ggplot2")
 #standard
 train_Standardized[,58] <- sapply(train_Standardized[,58], as.factor)
-svm_standard_train <- svm(V58 ~., data = train_Standardized, kernel = "linear", cost = .01, scale = FALSE)
-p_standard_train <- predict(svm_standard_train, train_Standardized, type="class")
+svm_standard <- svm(V58 ~., data = train_Standardized, kernel = "linear", cost = .01, scale = FALSE)
+p_standard_train <- predict(svm_standard, train_Standardized, type="class")
 error_rate_stan_train = mean(p_standard_train != train_Standardized$V58)
 error_rate_stan_train
 
 test_Standardized[,58] <- sapply(test_Standardized[,58], as.factor)
-svm_standard_test <- svm(V58 ~., data = test_Standardized, kernel = "linear", cost = .01, scale = FALSE)
-p_standard_test <- predict(svm_standard_test, test_Standardized, type="class")
+p_standard_test <- predict(svm_standard, test_Standardized, type="class")
 error_rate_stan_test = mean(p_standard_test != test_Standardized$V58)
 error_rate_stan_test
 
 #Discretize Transformation
 train_Discretize[,58] <- sapply(train_Discretize[,58], as.factor)
-svm_dis_train <- svm(V58 ~., data = train_Discretize, kernel = "linear", cost = .01, scale = FALSE)
-p_dis_train <- predict(svm_dis_train, train_Discretize, type="class")
+svm_dis <- svm(V58 ~., data = train_Discretize, kernel = "linear", cost = .01, scale = FALSE)
+p_dis_train <- predict(svm_dis, train_Discretize, type="class")
 error_rate_dis_train = mean(p_dis_train != train_Discretize$V58)
 error_rate_dis_train
 
 test_Discretize[,58] <- sapply(test_Discretize[,58], as.factor)
-svm_dis_test <- svm(V58 ~., data = test_Discretize, kernel = "linear", cost = .01, scale = FALSE)
-p_dis_test <- predict(svm_dis_test, test_Discretize, type="class")
+p_dis_test <- predict(svm_dis, test_Discretize, type="class")
 error_rate_dis_test = mean(p_dis_test != test_Discretize$V58)
 error_rate_dis_test
 
 #log
 train_Log[,58] <- sapply(train_Log[,58], as.factor)
-svm_log_train <- svm(V58 ~., data = train_Log, kernel = "linear", cost = .01, scale = FALSE)
-p_log_train <- predict(svm_log_train, train_Log, type="class")
+svm_log <- svm(V58 ~., data = train_Log, kernel = "linear", cost = .01, scale = FALSE)
+p_log_train <- predict(svm_log, train_Log, type="class")
 error_rate_log_train = mean(p_log_train != train_Log$V58)
 error_rate_log_train
 
 test_Log[,58] <- sapply(test_Log[,58], as.factor)
-svm_log_test <- svm(V58 ~., data = test_Log, kernel = "linear", cost = .01, scale = FALSE)
-p_log_test <- predict(svm_log_test, test_Log, type="class")
+p_log_test <- predict(svm_log, test_Log, type="class")
 error_rate_log_test = mean(p_log_test != test_Log$V58)
 error_rate_log_test
 
@@ -283,40 +280,37 @@ error_rate_log_test
 #Radial
 #standard
 train_Standardized[,58] <- sapply(train_Standardized[,58], as.factor)
-svm_standard_train <- svm(V58 ~., data = train_Standardized, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
+svm_standard_r <- svm(V58 ~., data = train_Standardized, kernel = "radial", cost = 1, gamma = 1, scale = FALSE)
 p_standard_train <- predict(svm_standard_train, train_Standardized, type="class")
 error_rate_stan_train_r = mean(p_standard_train != train_Standardized$V58)
 error_rate_stan_train_r
 
 test_Standardized[,58] <- sapply(test_Standardized[,58], as.factor)
-svm_standard_test <- svm(V58 ~., data = test_Standardized, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
-p_standard_test <- predict(svm_standard_test, test_Standardized, type="class")
+p_standard_test <- predict(svm_standard_r, test_Standardized, type="class")
 error_rate_stan_test_r = mean(p_standard_test != test_Standardized$V58)
 error_rate_stan_test_r
 
 #Discretize Transformation
 train_Discretize[,58] <- sapply(train_Discretize[,58], as.factor)
-svm_dis_train <- svm(V58 ~., data = train_Discretize, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
-p_dis_train <- predict(svm_dis_train, train_Discretize, type="class")
+svm_dis_r <- svm(V58 ~., data = train_Discretize, kernel = "radial", cost = 1, gamma = 1, scale = FALSE)
+p_dis_train <- predict(svm_dis_r, train_Discretize, type="class")
 error_rate_dis_train_r = mean(p_dis_train != train_Discretize$V58)
 error_rate_dis_train_r
 
 test_Discretize[,58] <- sapply(test_Discretize[,58], as.factor)
-svm_dis_test <- svm(V58 ~., data = test_Discretize, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
-p_dis_test <- predict(svm_dis_test, test_Discretize, type="class")
+p_dis_test <- predict(svm_dis_r, test_Discretize, type="class")
 error_rate_dis_test_r = mean(p_dis_test != test_Discretize$V58)
 error_rate_dis_test_r
 
 #log
 train_Log[,58] <- sapply(train_Log[,58], as.factor)
-svm_log_train <- svm(V58 ~., data = train_Log, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
-p_log_train <- predict(svm_log_train, train_Log, type="class")
+svm_log_r <- svm(V58 ~., data = train_Log, kernel = "radial", cost = 1, gamma = 1, scale = FALSE)
+p_log_train <- predict(svm_log_r, train_Log, type="class")
 error_rate_log_train_r = mean(p_log_train != train_Log$V58)
 error_rate_log_train_r
 
 test_Log[,58] <- sapply(test_Log[,58], as.factor)
-svm_log_test <- svm(V58 ~., data = test_Log, kernel = "radial", cost = .001, gamma = 1, scale = FALSE)
-p_log_test <- predict(svm_log_test, test_Log, type="class")
+p_log_test <- predict(svm_log_r, test_Log, type="class")
 error_rate_log_test_r = mean(p_log_test != test_Log$V58)
 error_rate_log_test_r
 
