@@ -27,7 +27,7 @@ Standardizing Train Data
 ```{r}
 train_Standardized = data.frame(scale(train))
 train_Standardized$V58 = train$V58
-train_Standardized
+head(train_Standardized)
 ```
 
 Standardizing Test Data
@@ -176,7 +176,9 @@ rej_logIdx
 rej_disIdx
 ```
 These variables listed above are statistically significant from both the logistic regression model on standardized data and log transformed data. 
-
+```{r}
+summary(log_lr)
+```
 # C) LDA and QDA 
 
 LDA on the standardized data 
@@ -281,7 +283,7 @@ error_rate_log_test
 #standard
 train_Standardized[,58] <- sapply(train_Standardized[,58], as.factor)
 svm_standard_r <- svm(V58 ~., data = train_Standardized, kernel = "radial", cost = 1, gamma = 1, scale = FALSE)
-p_standard_train <- predict(svm_standard_train, train_Standardized, type="class")
+p_standard_train <- predict(svm_standard_r, train_Standardized, type="class")
 error_rate_stan_train_r = mean(p_standard_train != train_Standardized$V58)
 error_rate_stan_train_r
 
@@ -350,5 +352,9 @@ tab
 ```
 # Classifier Design
 
-
+From the logistic regressor classifier, we were able to determine which columns are most important to the classifier, so we will be using those features in our best performing model on the test set: SVM Radial on Log Transformed Data 
+```{r}
+most_imp_attributes = c("V1","V5","V7","V8","V12","V16","V21","V22","V23","V24","V25","V27","V33","V37","V42","V44","V45","V46","V49","V52","V53","V57")
+most_imp_attributes
+```
 
